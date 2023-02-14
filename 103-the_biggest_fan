@@ -1,0 +1,9 @@
+#!/bin/bash
+declare -A request_count
+while read line; do
+  host=$(echo $line | awk -F'\t' '{print $1}')
+  ((request_count[$host]++))
+done
+for host in "${!request_count[@]}"; do
+  printf "%s\t%d\n" "$host" "${request_count[$host]}"
+done | sort -k2nr | head -n 11
